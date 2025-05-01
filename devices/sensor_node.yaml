@@ -1,0 +1,17 @@
+esphome:
+  name: sensor_node
+  platform: ESP32
+  board: esp32dev
+
+wifi:
+  ssid: "YourSSID"
+  password: "YourPassword"
+
+sensor:
+  - platform: dallas
+    address: 0xC40000029A4BCD28
+    name: "Temperature Sensor"
+
+logger:
+api:
+ota:
