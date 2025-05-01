@@ -1,0 +1,36 @@
+name: ESPHome DevOps CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    name: Simulate ESPHome CI/CD
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Клонування репозиторію
+        uses: actions/checkout@v3
+
+      - name: 🐍 Встановлення Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: ⚙️ Встановлення ESPHome
+        run: pip install esphome
+
+      - name: ✅ Валідація YAML конфігурації
+        run: esphome esphome.yaml validate
+
+      - name: 🔧 Симуляція компіляції прошивки
+        run: |
+          echo "Створення fake .bin прошивки..."
+          mkdir -p build
+          echo "FAKE-FIRMWARE" > build/esp_simulated.bin
+
+      - name: 📤 Симульоване повідомлення
+        run: echo "✅ Симуляція завершена. Файл esp_simulated.bin створено."
