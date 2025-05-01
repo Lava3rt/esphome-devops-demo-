@@ -1,0 +1,31 @@
+name: ESPHome CI
+
+on:
+  push:
+    paths:
+      - 'devices/*.yaml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install ESPHome
+        run: pip install esphome
+
+      - name: Validate config
+        run: esphome compile devices/sensor_node.yaml
+
+      - name: Upload firmware
+        uses: actions/upload-artifact@v3
+        with:
+          name: firmware
+          path: devices/.esphome/build/sensor_node/.pioenvs/sensor_node/firmware.bin
