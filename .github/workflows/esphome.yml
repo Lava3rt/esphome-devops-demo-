@@ -23,6 +23,4 @@ jobs:
         run: pip install esphome
 
       - name: Validate ESPHome config
-        run: esphome sensor_node.yaml validate
-  # Додав workflow для CI перевірки конфігурації ESPHome
-
+        run: esphome config sensor_node.yaml
