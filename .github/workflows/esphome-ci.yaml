@@ -1,0 +1,32 @@
+name: ESPHome CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  validate-config:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install ESPHome
+        run: pip install esphome
+
+      - name: Validate all ESPHome YAML configs
+        run: |
+          echo "🔍 Searching for YAML configs..."
+          shopt -s globstar
+          for file in **/*.yaml; do
+            echo "🧪 Validating $file..."
+            esphome config "$file"
+          done
